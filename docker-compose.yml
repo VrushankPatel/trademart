@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Development Environment
+  trademart-dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JWT_SECRET=dev-secret-key
+    volumes:
+      - ./config:/app/config
+    networks:
+      - trademart-network-dev
+
+  # QA Environment
+  trademart-qa:
+    build:
+      context: .
+      target: qa
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=qa
+      - JWT_SECRET=qa-secret-key
+    volumes:
+      - ./config:/app/config
+    networks:
+      - trademart-network-qa
+
+  # Production Environment
+  trademart-prod:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./config:/app/config
+    depends_on:
+      - postgres
+    networks:
+      - trademart-network-prod
+
+  # PostgreSQL for Production
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=trademart
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - trademart-network-prod
+
+networks:
+  trademart-network-dev:
+    driver: bridge
+  trademart-network-qa:
+    driver: bridge
+  trademart-network-prod:
+    driver: bridge
+
+volumes:
+  postgres-data:

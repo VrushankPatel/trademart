@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fix PUBLIC "-//FIX//DTD FIX 4.4//EN" "http://www.fixprotocol.org/fix-4-4/fix-4-4.dtd">
+<fix>
+    <header>
+        <field name="BeginString" value="FIX.4.4"/>
+        <field name="SenderCompID" value="SIMULATOR"/>
+        <field name="TargetCompID" value="CLIENT"/>
+        <field name="HeartBtInt" value="30"/>
+    </header>
+    <session>
+        <setting name="ConnectionType" value="initiator"/>
+        <setting name="StartTime" value="00:00:00"/>
+        <setting name="EndTime" value="00:00:00"/>
+        <setting name="UseDataDictionary" value="Y"/>
+        <setting name="DataDictionary" value="FIX44.xml"/>
+        <setting name="ValidateUserDefinedFields" value="N"/>
+        <setting name="ValidateIncomingMessage" value="N"/>
+        <setting name="ResetOnLogon" value="Y"/>
+        <setting name="ResetOnLogout" value="Y"/>
+        <setting name="ResetOnDisconnect" value="Y"/>
+        <setting name="FileLogPath" value="data/fix/log"/>
+        <setting name="FileStorePath" value="data/fix"/>
+        <setting name="ReconnectInterval" value="5"/>
+        <setting name="LogoutTimeout" value="5"/>
+        <setting name="LogonTimeout" value="10"/>
+        <setting name="SocketConnectHost" value="localhost"/>
+        <setting name="SocketConnectPort" value="9876"/>
+        <setting name="RefreshOnLogon" value="Y"/>
+        <setting name="SendRedundantResendRequests" value="Y"/>
+        <setting name="PersistMessages" value="Y"/>
+    </session>
+</fix> 
