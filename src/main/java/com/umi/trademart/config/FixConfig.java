@@ -4,13 +4,10 @@ import com.umi.trademart.fix.FixApplication;
 import com.umi.trademart.fix.FixMessageHandler;
 import com.umi.trademart.service.OrderService;
 import jakarta.annotation.PostConstruct;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import quickfix.*;
 
 import java.io.FileOutputStream;
@@ -24,20 +21,16 @@ import java.nio.file.Path;
  * @author VrushankPatel
  */
 @Slf4j
-@Data
 @Configuration
-@ConfigurationProperties(prefix = "fix.config")
+@RequiredArgsConstructor
 public class FixConfig {
-    private String path;
-    private String senderCompId;
-    private String targetCompId;
-    private int heartbeatInterval;
-    private int reconnectInterval;
+    private final FixProperties fixProperties;
 
     @PostConstruct
     public void logProperties() {
         log.info("FixConfig properties after initialization: path={}, senderCompId={}, targetCompId={}, heartbeatInterval={}, reconnectInterval={}", 
-            path, senderCompId, targetCompId, heartbeatInterval, reconnectInterval);
+            fixProperties.getPath(), fixProperties.getSenderCompId(), fixProperties.getTargetCompId(), 
+            fixProperties.getHeartbeatInterval(), fixProperties.getReconnectInterval());
     }
 
     /**
@@ -56,7 +49,7 @@ public class FixConfig {
      */
     @Bean
     public SessionSettings sessionSettings() throws ConfigError {
-        log.info("Loading FIX configuration from {}", path);
+        log.info("Loading FIX configuration from {}", fixProperties.getPath());
         try {
             // Create a temporary file with the FIX settings
             Path tempFile = Files.createTempFile("fix", ".cfg");
@@ -68,7 +61,7 @@ public class FixConfig {
                 writer.println("StartTime=00:00:00");
                 writer.println("EndTime=00:00:00");
                 writer.println("UseDataDictionary=Y");
-                writer.println("DataDictionary=" + path);
+                writer.println("DataDictionary=" + fixProperties.getPath());
                 writer.println("ValidateUserDefinedFields=N");
                 writer.println("ValidateIncomingMessage=N");
                 writer.println("RefreshOnLogon=Y");
@@ -80,12 +73,12 @@ public class FixConfig {
                 writer.println();
                 writer.println("[SESSION]");
                 writer.println("BeginString=FIX.4.4");
-                writer.println("SenderCompID=" + senderCompId);
-                writer.println("TargetCompID=" + targetCompId);
+                writer.println("SenderCompID=" + fixProperties.getSenderCompId());
+                writer.println("TargetCompID=" + fixProperties.getTargetCompId());
                 writer.println("SocketConnectHost=localhost");
                 writer.println("SocketConnectPort=9876");
-                writer.println("HeartBtInt=" + heartbeatInterval);
-                writer.println("ReconnectInterval=" + reconnectInterval);
+                writer.println("HeartBtInt=" + fixProperties.getHeartbeatInterval());
+                writer.println("ReconnectInterval=" + fixProperties.getReconnectInterval());
             }
 
             // Create session settings from the temporary file
