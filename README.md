@@ -1,5 +1,13 @@
+# ⚠️ DEPRECATED ⚠️
+
+**This repository is no longer maintained or supported. Please refer to [Tradestar](https://github.com/VrushankPatel/tradestar) for the latest version of this project. All features and functionality have been migrated to Tradestar.**
+
+---
+
 # TradeMart Trading Gateway Simulator
 
+[![deprecated](https://img.shields.io/badge/Stability-Deprecated-red)](http://github.com/badges/stability-badges)
+[![No Maintenance Intended](https://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 ![Java](https://img.shields.io/badge/Java-17-red.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
